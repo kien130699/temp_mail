@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta Muse AI | Cụm Siêu Máy Tính Sáng Tạo Video Thế Hệ Mới</title>
+  <meta name="description" content="Khám phá sức mạnh của Meta Muse AI - Hệ thống điều phối GPU Cluster thế hệ mới, model Seedance 2.5, render video 60fps và môi trường Hatch Linux VM.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #080b14;
+      --card-bg: rgba(18, 24, 43, 0.7);
+      --card-border: rgba(99, 102, 241, 0.2);
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --secondary: #06b6d4;
+      --accent: #ec4899;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Background Orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -1;
+      pointer-events: none;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(99, 102, 241, 0.25); top: -100px; left: -100px; }
+    .orb-2 { width: 450px; height: 450px; background: rgba(6, 182, 212, 0.2); bottom: 10%; right: -50px; }
+    .orb-3 { width: 350px; height: 350px; background: rgba(236, 72, 153, 0.15); top: 40%; left: 35%; }
+
+    /* Navigation */
+    header {
+      padding: 24px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 30%, var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .logo-badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: var(--primary-light);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 8% 60px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 30px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+    }
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .highlight {
+      background: linear-gradient(135deg, var(--secondary), var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 780px;
+      margin: 0 auto 36px;
+    }
+
+    /* Specs Banner */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 0 8% 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .spec-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      backdrop-filter: blur(16px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .spec-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(99, 102, 241, 0.5);
+      box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.25);
+    }
+    .spec-val {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 6px;
+    }
+    .spec-label {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Features Grid */
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .section-title h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .features {
+      padding: 40px 8% 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+    .feat-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 32px 28px;
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: all 0.3s ease;
+    }
+    .feat-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .feat-icon {
+      font-size: 2.2rem;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+    .feat-card h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .feat-card p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 8%;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+
+  <!-- ANTI-COPY & ANTI-F12 PROTECTION RULE (Global User Rule) -->
+  <script>
+    window.__ALLOW_COPY__ = false;
+
+    // Chặn F12 và phím tắt mở DevTools
+    document.addEventListener('keydown', function(e) {
+      if (window.__ALLOW_COPY__) return;
+      if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+      if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C', 'K'].includes(e.key.toUpperCase())) {
+        e.preventDefault();
+        return false;
+      }
+      if (e.ctrlKey && e.key.toUpperCase() === 'U') {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Chặn chuột phải
+    document.addEventListener('contextmenu', function(e) {
+      if (window.__ALLOW_COPY__) return;
+      e.preventDefault();
+    });
+
+    // Chặn bôi đen sao chép
+    document.addEventListener('copy', function(e) {
+      if (window.__ALLOW_COPY__) return;
+      e.preventDefault();
+    });
+  </script>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <header>
+    <div class="logo">
+      <span>Meta Muse AI</span>
+      <span class="logo-badge">HATCH OS</span>
+    </div>
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      <span>Container Live: Port 3000</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Khám Phá Sức Mạnh <br><span class="highlight">Meta Muse AI & Seedance</span></h1>
+      <p>Hệ thống điều phối trí tuệ nhân tạo thế hệ mới của Meta, kết hợp giữa môi trường Linux Container Hatch độc lập và Cụm siêu máy tính GPU Cluster hàng đầu thế giới.</p>
+    </section>
+
+    <!-- Specs Grid -->
+    <section class="specs-grid">
+      <div class="spec-card">
+        <div class="spec-val">8.0 GB</div>
+        <div class="spec-label">Bộ nhớ RAM Hatch VM</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-val">2 vCPU</div>
+        <div class="spec-label">Bộ xử lý Linux 7.0 Core</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-val">100 GB</div>
+        <div class="spec-label">Dung lượng ổ đĩa NVMe</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-val">60 FPS</div>
+        <div class="spec-label">Độ mượt Seedance 2.5</div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section>
+      <div class="section-title">
+        <h2>Kiến Trúc Đột Phá Của Muse AI</h2>
+        <p style="color: var(--text-muted);">Sự kết hợp hoàn hảo giữa điện toán đám mây và mô hình sinh video đỉnh cao</p>
+      </div>
+
+      <div class="features">
+        <div class="feat-card">
+          <div class="feat-icon">🎬</div>
+          <h3>Model Seedance 2.5</h3>
+          <p>Sinh video chuẩn điện ảnh với độ phân giải siêu nét, ánh sáng chân thực, chuyển động máy quay đa chiều và tốc độ khung hình 60fps mượt mà.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon">⚡</div>
+          <h3>Môi Trường Hatch VM</h3>
+          <p>Mỗi phiên làm việc được cấp riêng một container Linux độc lập trang bị sẵn Python 3, Node.js, FFmpeg và các công cụ xử lý tệp tin tốc độ cao.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon">🛡️</div>
+          <h3>Mã Hóa Noise Protocol</h3>
+          <p>Kênh truyền thông tin hai chiều giữa người dùng và máy ảo được bảo vệ bởi giao thức Noise Protocol mã hóa đầu cuối (E2EE) độc quyền từ Meta.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Meta Muse AI Studio Showcase • Server hoạt động tại cổng nội bộ 3000</p>
+  </footer>
+</body>
+</html>
