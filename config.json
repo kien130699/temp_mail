@@ -1,0 +1,9 @@
+{
+  "admin_key": "admin_hub_secret_2026",
+  "gmail_user": "phuckienviproaccklingaifreevip@gmail.com",
+  "gmail_pass": "qtwxvnmzuyvxfzfa",
+  "target_domain": "blueskyvinh.online",
+  "port": 3000,
+  "max_mail_age_minutes": 45,
+  "allow_vietnam_ip_only": false
+}
